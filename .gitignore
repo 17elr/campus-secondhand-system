@@ -1,0 +1,12 @@
+# Build output
+server/target/
+web/node_modules/
+web/dist/
+*.log
+server/uploads/
+
+# Local review and delivery working files
+.guidance-review/
+tmp/
+毕业设计交付/
+__pycache__/

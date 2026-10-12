@@ -1,0 +1,488 @@
+[
+  {
+    "name": "market-1",
+    "page": "market",
+    "title": "发现好物 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f"
+      }
+    ]
+  },
+  {
+    "name": "market-2",
+    "page": "market",
+    "title": "发现好物 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://alumni.uq.edu.au/files/39262/Grads-GC.jpg",
+        "source": "https://alumni.uq.edu.au/give-uq/giving-societies/great-court-society"
+      },
+      {
+        "url": "https://www.edugradus.com/cdn/shop/articles/journalist_2Fe7701670-9c74-4546-9d3f-ffea2c31ddaf_2Fthumbnail.jpg?v=1772726529&width=1100",
+        "source": "https://www.edugradus.com/en-us/blogs/news/professional-education-in-brazil-how-edugradus-is-positioned"
+      },
+      {
+        "url": "https://img.shetu66.com/2023/05/18/1684376971348693.jpg",
+        "source": "https://www.shetu66.com/muban/546639345747107207"
+      },
+      {
+        "url": "https://www.colorado.edu/seniors/sites/default/files/styles/large_image_style/public/article-image/bekfast.jpg?itok=UMmDr3vL",
+        "source": "https://www.colorado.edu/seniors/2023/05/04/commencement-breakfast"
+      },
+      {
+        "url": "https://imagepphcloud.thepaper.cn/pph/image/203/282/628.jpg",
+        "source": "https://www.thepaper.cn/newsDetail_forward_18796768"
+      }
+    ]
+  },
+  {
+    "name": "market-3",
+    "page": "market",
+    "title": "发现好物 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1523580494863-6f3031224c94"
+      }
+    ]
+  },
+  {
+    "name": "wanted-1",
+    "page": "wanted",
+    "title": "求购大厅 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da"
+      }
+    ]
+  },
+  {
+    "name": "wanted-2",
+    "page": "wanted",
+    "title": "求购大厅 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6"
+      }
+    ]
+  },
+  {
+    "name": "wanted-3",
+    "page": "wanted",
+    "title": "求购大厅 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1507842217343-583bb7270b66"
+      }
+    ]
+  },
+  {
+    "name": "mine-1",
+    "page": "mine",
+    "title": "我的发布 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1497366811353-6870744d04b2"
+      }
+    ]
+  },
+  {
+    "name": "mine-2",
+    "page": "mine",
+    "title": "我的发布 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1524758631624-e2822e304c36"
+      }
+    ]
+  },
+  {
+    "name": "mine-3",
+    "page": "mine",
+    "title": "我的发布 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1497366754035-f200968a6e72"
+      }
+    ]
+  },
+  {
+    "name": "favorites-1",
+    "page": "favorites",
+    "title": "我的收藏 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1519682337058-a94d519337bc"
+      }
+    ]
+  },
+  {
+    "name": "favorites-2",
+    "page": "favorites",
+    "title": "我的收藏 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570"
+      }
+    ]
+  },
+  {
+    "name": "favorites-3",
+    "page": "favorites",
+    "title": "我的收藏 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1516979187457-637abb4f9353"
+      }
+    ]
+  },
+  {
+    "name": "orders-1",
+    "page": "orders",
+    "title": "我的订单 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1521791136064-7986c2920216"
+      }
+    ]
+  },
+  {
+    "name": "orders-2",
+    "page": "orders",
+    "title": "我的订单 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1556761175-b413da4baf72"
+      }
+    ]
+  },
+  {
+    "name": "orders-3",
+    "page": "orders",
+    "title": "我的订单 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1557804506-669a67965ba0"
+      }
+    ]
+  },
+  {
+    "name": "messages-1",
+    "page": "messages",
+    "title": "校园消息 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1522071820081-009f0129c71c"
+      }
+    ]
+  },
+  {
+    "name": "messages-2",
+    "page": "messages",
+    "title": "校园消息 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1543269865-cbf427effbad"
+      }
+    ]
+  },
+  {
+    "name": "messages-3",
+    "page": "messages",
+    "title": "校园消息 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
+      }
+    ]
+  },
+  {
+    "name": "admin-overview-1",
+    "page": "admin-overview",
+    "title": "运营概览 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1460925895917-afdab827c52f"
+      }
+    ]
+  },
+  {
+    "name": "admin-overview-2",
+    "page": "admin-overview",
+    "title": "运营概览 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1551288049-bebda4e38f71"
+      }
+    ]
+  },
+  {
+    "name": "admin-overview-3",
+    "page": "admin-overview",
+    "title": "运营概览 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40"
+      }
+    ]
+  },
+  {
+    "name": "admin-goods-1",
+    "page": "admin-goods",
+    "title": "商品审核 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
+      }
+    ]
+  },
+  {
+    "name": "admin-goods-2",
+    "page": "admin-goods",
+    "title": "商品审核 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4"
+      }
+    ]
+  },
+  {
+    "name": "admin-goods-3",
+    "page": "admin-goods",
+    "title": "商品审核 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
+      }
+    ]
+  },
+  {
+    "name": "admin-users-1",
+    "page": "admin-users",
+    "title": "用户管理 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1531482615713-2afd69097998"
+      }
+    ]
+  },
+  {
+    "name": "admin-users-2",
+    "page": "admin-users",
+    "title": "用户管理 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1517048676732-d65bc937f952"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1551836022-d5d88e9218df"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf"
+      }
+    ]
+  },
+  {
+    "name": "admin-users-3",
+    "page": "admin-users",
+    "title": "用户管理 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
+      }
+    ]
+  },
+  {
+    "name": "admin-orders-1",
+    "page": "admin-orders",
+    "title": "订单监管 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1553877522-43269d4ea984"
+      }
+    ]
+  },
+  {
+    "name": "admin-orders-2",
+    "page": "admin-orders",
+    "title": "订单监管 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d"
+      }
+    ]
+  },
+  {
+    "name": "admin-orders-3",
+    "page": "admin-orders",
+    "title": "订单监管 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
+      }
+    ]
+  },
+  {
+    "name": "admin-messages-1",
+    "page": "admin-messages",
+    "title": "留言管理 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+      }
+    ]
+  },
+  {
+    "name": "admin-messages-2",
+    "page": "admin-messages",
+    "title": "留言管理 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac"
+      }
+    ]
+  },
+  {
+    "name": "admin-messages-3",
+    "page": "admin-messages",
+    "title": "留言管理 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846"
+      }
+    ]
+  },
+  {
+    "name": "admin-wants-1",
+    "page": "admin-wants",
+    "title": "求购审核 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173"
+      }
+    ]
+  },
+  {
+    "name": "admin-wants-2",
+    "page": "admin-wants",
+    "title": "求购审核 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1513258496099-48168024aec0"
+      }
+    ]
+  },
+  {
+    "name": "admin-wants-3",
+    "page": "admin-wants",
+    "title": "求购审核 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e"
+      }
+    ]
+  },
+  {
+    "name": "admin-reports-1",
+    "page": "admin-reports",
+    "title": "举报中心 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1456324504439-367cee3b3c32"
+      }
+    ]
+  },
+  {
+    "name": "admin-reports-2",
+    "page": "admin-reports",
+    "title": "举报中心 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1501504905252-473c47e087f8"
+      }
+    ]
+  },
+  {
+    "name": "admin-reports-3",
+    "page": "admin-reports",
+    "title": "举报中心 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1509062522246-3755977927d7"
+      }
+    ]
+  },
+  {
+    "name": "admin-market-1",
+    "page": "admin-market",
+    "title": "管理员浏览集市 · 轮播 1",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a"
+      }
+    ]
+  },
+  {
+    "name": "admin-market-2",
+    "page": "admin-market",
+    "title": "管理员浏览集市 · 轮播 2",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b"
+      }
+    ]
+  },
+  {
+    "name": "admin-market-3",
+    "page": "admin-market",
+    "title": "管理员浏览集市 · 轮播 3",
+    "candidates": [
+      {
+        "url": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1600&q=90",
+        "source": "https://images.unsplash.com/photo-1497215728101-856f4ea42174"
+      }
+    ]
+  }
+]
