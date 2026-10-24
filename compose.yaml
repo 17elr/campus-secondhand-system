@@ -1,0 +1,77 @@
+name: campus-market
+services:
+  mysql:
+    image: mysql:8.0.44
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?generate .env first}
+      MARKET_DB_PASSWORD: ${MARKET_DB_PASSWORD:?generate .env first}
+      NOTICE_DB_PASSWORD: ${NOTICE_DB_PASSWORD:?generate .env first}
+    ports: ["127.0.0.1:13319:3306"]
+    volumes: ["mysql-data:/var/lib/mysql", "./infra/mysql-init.sh:/docker-entrypoint-initdb.d/01-market.sh:ro"]
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  redis:
+    image: redis:7.4-alpine
+    command: ['sh', '-c', 'exec redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD"']
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?generate .env first}
+    ports: ["127.0.0.1:16379:6379"]
+    volumes: ["redis-data:/data"]
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  market:
+    build: {context: ., args: {MODULE: server, ARTIFACT: market-service}}
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      MARKET_DB_URL: jdbc:mysql://mysql:3306/market?serverTimezone=Asia/Shanghai
+      MARKET_DB_USER: market
+      MARKET_DB_PASSWORD: ${MARKET_DB_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      NOTICE_URL: http://notice:18085
+      NOTICE_INTERNAL_TOKEN: ${NOTICE_INTERNAL_TOKEN:?generate .env first}
+      SPRING_PROFILES_ACTIVE: ${MARKET_PROFILES:-default}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    volumes: ["uploads:/app/uploads"]
+    networks: [internal]
+    depends_on:
+      mysql: {condition: service_healthy}
+      redis: {condition: service_healthy}
+  notice:
+    build: {context: ., args: {MODULE: notice-service, ARTIFACT: notice-service}}
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      NOTICE_DB_URL: jdbc:mysql://mysql:3306/notice?serverTimezone=Asia/Shanghai
+      NOTICE_DB_USER: notice
+      NOTICE_DB_PASSWORD: ${NOTICE_DB_PASSWORD}
+      NOTICE_INTERNAL_TOKEN: ${NOTICE_INTERNAL_TOKEN}
+    networks: [internal]
+    depends_on:
+      mysql: {condition: service_healthy}
+  gateway:
+    build: {context: ., args: {MODULE: gateway, ARTIFACT: gateway}}
+    environment: {SERVER_ADDRESS: 0.0.0.0, MARKET_URL: "http://market:18084"}
+    ports: ["127.0.0.1:18080:18080"]
+    networks: [internal, edge]
+    depends_on: [market]
+  web:
+    build: ./web
+    ports: ["127.0.0.1:15173:80"]
+    networks: [edge]
+    depends_on: [gateway]
+volumes:
+  mysql-data:
+  redis-data:
+  uploads:
+networks:
+  internal: {internal: true}
+  edge:

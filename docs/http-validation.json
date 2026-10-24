@@ -1,0 +1,14 @@
+{
+  "passed": 6,
+  "failed": 0,
+  "checks": [
+    "gateway, forged identity, CSRF and internal route isolation",
+    "two market processes share the same Redis Session",
+    "20 identical requests, payload conflict, seller confirmation and buyer completion",
+    "real OpenFeign delivery, recipient isolation and idempotent read",
+    "notice outage does not block transactions; persisted Outbox resumes delivery",
+    "Redis Session failure returns 503 without anonymous fallback"
+  ],
+  "outageOrderSeconds": 0.018,
+  "compose": false
+}

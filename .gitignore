@@ -10,3 +10,11 @@ server/uploads/
 tmp/
 毕业设计交付/
 __pycache__/
+
+**/target/
+.env
+.env.*
+!.env.example
+uploads/
+*.csv
+legacy-export/

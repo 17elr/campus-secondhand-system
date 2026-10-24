@@ -1,36 +1,37 @@
 package com.campus.market.order;
 
-import com.campus.market.common.ApiResponse;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import com.campus.market.common.PageQuery;
-import com.campus.market.common.PageResult;
+import com.campus.market.auth.User;
+import com.campus.market.common.*;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-    private final OrderService service;
+  private final OrderService service;
 
-    public OrderController(OrderService service) {
-        this.service = service;
-    }
+  public OrderController(OrderService service) {
+    this.service = service;
+  }
 
-    @PostMapping
-    public ApiResponse<TradeOrder> create(@RequestParam Long goodsId,
-            @RequestHeader(value = "X-User-Id", defaultValue = "1") Long userId) {
-        return ApiResponse.ok(service.create(goodsId, userId));
-    }
+  @PostMapping
+  public ApiResponse<?> create(
+      @RequestParam Long goodsId,
+      @RequestParam String requestKey,
+      @RequestAttribute("currentUser") User user) {
+    return ApiResponse.ok(service.create(goodsId, user.getId(), requestKey));
+  }
 
-    @GetMapping("/mine")
-    public ApiResponse<PageResult<TradeOrder>> mine(@Valid PageQuery query,
-            @RequestHeader(value = "X-User-Id", defaultValue = "1") Long userId) {
-        return ApiResponse.ok(service.page(query, userId));
-    }
+  @GetMapping("/mine")
+  public ApiResponse<?> mine(@Valid PageQuery q, @RequestAttribute("currentUser") User user) {
+    return ApiResponse.ok(service.page(q, user.getId()));
+  }
 
-    @PatchMapping("/{id}/cancel")
-    public ApiResponse<TradeOrder> cancel(@PathVariable Long id,
-            @RequestHeader(value = "X-User-Id", defaultValue = "1") Long userId) {
-        return ApiResponse.ok(service.cancel(id, userId));
-    }
+  @PatchMapping("/{id}/{action:cancel|confirm|complete}")
+  public ApiResponse<?> change(
+      @PathVariable Long id,
+      @PathVariable String action,
+      @RequestAttribute("currentUser") User user) {
+    return ApiResponse.ok(service.transition(id, user, action, null));
+  }
 }

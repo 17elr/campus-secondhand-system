@@ -7,118 +7,178 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Goods {
-    private Long id;
-    @NotBlank
-    private String title;
-    @NotNull
-    @DecimalMin("0.01")
-    private BigDecimal price;
-    private String category, conditionLevel, location, description, imageUrl, sellerName, status;
-    private Integer favoriteCount;
-    private Boolean favorite;
-    private LocalDateTime createdAt;
+  private Long id;
+  private Long sellerId, reservedOrderId, version;
+  private Boolean ownershipVerified;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getSellerId() {
+    return sellerId;
+  }
 
-    public void setId(Long v) {
-        id = v;
-    }
+  public void setSellerId(Long v) {
+    sellerId = v;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  @com.fasterxml.jackson.annotation.JsonIgnore
+  public Long getReservedOrderId() {
+    return reservedOrderId;
+  }
 
-    public void setTitle(String v) {
-        title = v;
-    }
+  public void setReservedOrderId(Long v) {
+    reservedOrderId = v;
+  }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+  public Long getVersion() {
+    return version;
+  }
 
-    public void setPrice(BigDecimal v) {
-        price = v;
-    }
+  public void setVersion(Long v) {
+    version = v;
+  }
 
-    public String getCategory() {
-        return category;
-    }
+  public Boolean getOwnershipVerified() {
+    return ownershipVerified;
+  }
 
-    public void setCategory(String v) {
-        category = v;
-    }
+  public void setOwnershipVerified(Boolean v) {
+    ownershipVerified = v;
+  }
 
-    public String getConditionLevel() {
-        return conditionLevel;
-    }
+  @NotBlank
+  @jakarta.validation.constraints.Size(max = 120)
+  private String title;
 
-    public void setConditionLevel(String v) {
-        conditionLevel = v;
-    }
+  @NotNull
+  @DecimalMin("0.00")
+  @jakarta.validation.constraints.DecimalMax("99999999.99")
+  @jakarta.validation.constraints.Digits(integer = 8, fraction = 2)
+  private BigDecimal price;
 
-    public String getLocation() {
-        return location;
-    }
+  @NotBlank
+  @jakarta.validation.constraints.Pattern(regexp = "教材书籍|数码产品|生活用品|运动户外")
+  private String category;
 
-    public void setLocation(String v) {
-        location = v;
-    }
+  @NotBlank
+  @jakarta.validation.constraints.Pattern(regexp = "全新|九成新|八成新|七成新")
+  private String conditionLevel;
 
-    public String getDescription() {
-        return description;
-    }
+  @NotBlank
+  @jakarta.validation.constraints.Size(max = 80)
+  private String location;
 
-    public void setDescription(String v) {
-        description = v;
-    }
+  @NotBlank
+  @jakarta.validation.constraints.Size(max = 1000)
+  private String description;
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+  @jakarta.validation.constraints.Size(max = 500)
+  private String imageUrl;
 
-    public void setImageUrl(String v) {
-        imageUrl = v;
-    }
+  private String sellerName, status;
+  private Integer favoriteCount;
+  private Boolean favorite;
+  private LocalDateTime createdAt;
 
-    public String getSellerName() {
-        return sellerName;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setSellerName(String v) {
-        sellerName = v;
-    }
+  public void setId(Long v) {
+    id = v;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public void setStatus(String v) {
-        status = v;
-    }
+  public void setTitle(String v) {
+    title = v;
+  }
 
-    public Integer getFavoriteCount() {
-        return favoriteCount;
-    }
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-    public void setFavoriteCount(Integer v) {
-        favoriteCount = v;
-    }
+  public void setPrice(BigDecimal v) {
+    price = v;
+  }
 
-    public Boolean getFavorite() {
-        return favorite;
-    }
+  public String getCategory() {
+    return category;
+  }
 
-    public void setFavorite(Boolean v) {
-        favorite = v;
-    }
+  public void setCategory(String v) {
+    category = v;
+  }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  public String getConditionLevel() {
+    return conditionLevel;
+  }
 
-    public void setCreatedAt(LocalDateTime v) {
-        createdAt = v;
-    }
+  public void setConditionLevel(String v) {
+    conditionLevel = v;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String v) {
+    location = v;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String v) {
+    description = v;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String v) {
+    imageUrl = v;
+  }
+
+  public String getSellerName() {
+    return sellerName;
+  }
+
+  public void setSellerName(String v) {
+    sellerName = v;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String v) {
+    status = v;
+  }
+
+  public Integer getFavoriteCount() {
+    return favoriteCount;
+  }
+
+  public void setFavoriteCount(Integer v) {
+    favoriteCount = v;
+  }
+
+  public Boolean getFavorite() {
+    return favorite;
+  }
+
+  public void setFavorite(Boolean v) {
+    favorite = v;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime v) {
+    createdAt = v;
+  }
 }
