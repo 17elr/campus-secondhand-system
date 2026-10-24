@@ -3,7 +3,7 @@
   "java": "17.0.18",
   "database": "MySQL 8.0.44",
   "totals": {
-    "tests": 35,
+    "tests": 36,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -20,7 +20,7 @@
     {
       "module": "server",
       "name": "com.campus.market.CampusInteractionTest",
-      "tests": 3,
+      "tests": 4,
       "failures": 0,
       "errors": 0,
       "skipped": 0

@@ -70,15 +70,21 @@ public class GoodsController {
   }
 
   @PutMapping("/{id}/favorite")
-  public ApiResponse<Goods> favorite(
+  public ApiResponse<FavoriteView> favorite(
       @PathVariable Long id,
       @RequestAttribute(value = "currentUser", required = false) com.campus.market.auth.User user) {
-    return ApiResponse.ok(service.favorite(id, user.getId(), true));
+    return ApiResponse.ok(new FavoriteView(service.favorite(id, user.getId(), true)));
   }
 
   @DeleteMapping("/{id}/favorite")
-  public ApiResponse<Goods> unfavorite(
+  public ApiResponse<FavoriteView> unfavorite(
       @PathVariable Long id, @RequestAttribute("currentUser") com.campus.market.auth.User user) {
-    return ApiResponse.ok(service.favorite(id, user.getId(), false));
+    return ApiResponse.ok(new FavoriteView(service.favorite(id, user.getId(), false)));
+  }
+
+  record FavoriteView(Long id, Boolean favorite, Integer favoriteCount) {
+    FavoriteView(Goods goods) {
+      this(goods.getId(), goods.getFavorite(), goods.getFavoriteCount());
+    }
   }
 }

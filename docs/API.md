@@ -16,11 +16,11 @@
 | GET /api/goods | PageQuery | 匿名在售列表 |
 | GET /api/goods/mine | PageQuery | 本人ID归属商品 |
 | GET /api/goods/favorites | PageQuery | 本人收藏 |
-| GET /api/goods/{id} | 无 | 公开在售；其他状态需交易参与人、卖家或管理员 |
+| GET /api/goods/{id} | 无 | 公开在售；其他状态需已有收藏人、交易参与人、卖家或管理员 |
 | POST /api/goods | title,price,category,conditionLevel,location,description,imageUrl | 登录发布，卖家ID由服务端设置；201 |
 | PUT /api/goods/{id} | 同上 | 卖家且ON_SALE/OFF_SHELF、归属已核对 |
 | PATCH /api/goods/{id}/status | value=ON_SALE/OFF_SHELF | 无活动预留的本人商品 |
-| PUT/DELETE /api/goods/{id}/favorite | 无 | 设置收藏/取消收藏，重复调用幂等 |
+| PUT/DELETE /api/goods/{id}/favorite | 无 | 设置收藏/取消收藏，重复调用幂等；只返回id/favorite/favoriteCount，不泄露非公开商品详情 |
 | POST /api/orders | goodsId,requestKey（查询参数） | 买家发起意向，同key同参数返回原结果 |
 | GET /api/orders/mine | PageQuery | 本人买入或卖出的意向 |
 | PATCH /api/orders/{id}/confirm | 无 | 卖家确认PENDING |

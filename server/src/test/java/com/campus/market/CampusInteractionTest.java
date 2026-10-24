@@ -95,4 +95,19 @@ class CampusInteractionTest extends MarketTestSupport {
     for (JsonNode row : b.data(get("/api/goods/mine").header("X-User-Id", 1)).path("records"))
       assertEquals(3, row.path("sellerId").asLong());
   }
+
+  @Test
+  void favoriteDoesNotExposeAnUnlistedGoodsRecord() throws Exception {
+    Browser owner = login("student"), other = login("zhou");
+    Long gid =
+        jdbc.queryForObject(
+            "select id from goods where seller_id=1 and status='OFF_SHELF' limit 1", Long.class);
+    other.call(put("/api/goods/" + gid + "/favorite")).andExpect(status().isNotFound());
+    for (int i = 0; i < 2; i++) {
+      JsonNode data = other.data(delete("/api/goods/" + gid + "/favorite"));
+      assertFalse(data.has("title"));
+      assertFalse(data.has("description"));
+      assertFalse(data.path("favorite").asBoolean());
+    }
+  }
 }

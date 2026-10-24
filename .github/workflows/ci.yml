@@ -1,5 +1,8 @@
 name: CI
 on: [push, pull_request, workflow_dispatch]
+concurrency:
+  group: ci-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -43,6 +46,7 @@ jobs:
           npm install --prefix tmp/browser --no-save playwright
           node tmp/browser/node_modules/playwright/cli.js install --with-deps chromium
           npm --prefix web run dev > tmp/vite.log 2>&1 &
+          for attempt in $(seq 1 60); do curl -fsS http://127.0.0.1:15173 > /dev/null && break; sleep 1; done
           node scripts/check_migration_ui.cjs "$GITHUB_WORKSPACE/tmp/browser/node_modules/playwright"
       - uses: actions/upload-artifact@v4
         if: always()

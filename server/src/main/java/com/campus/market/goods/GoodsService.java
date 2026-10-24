@@ -32,7 +32,8 @@ public class GoodsService {
     }
     if (!"ON_SALE".equals(g.getStatus())
         && !Objects.equals(userId, g.getSellerId())
-        && orders.participates(id, userId) == 0) {
+        && orders.participates(id, userId) == 0
+        && mapper.favoriteExists(id, userId) == 0) {
       User u = users.findById(userId);
       if (u == null || !"ADMIN".equals(u.getRole())) throw missing("商品暂不可见");
     }
@@ -117,6 +118,7 @@ public class GoodsService {
     if (g == null) throw missing("商品不存在");
     int exists = mapper.favoriteExists(id, uid);
     if (desired && exists == 0) {
+      if (!"ON_SALE".equals(g.getStatus())) throw missing("商品不可收藏");
       mapper.addFavorite(id, uid);
       mapper.countFavorite(id, 1);
     } else if (!desired && exists > 0) {

@@ -6,11 +6,11 @@
 
 | 检查 | 结果与证据 |
 |---|---|
-| mvn clean verify | 35项通过，0失败/错误/跳过；market30、notice3、gateway2；[test-results.json](test-results.json) |
+| mvn verify | 36项通过，0失败/错误/跳过；market31、notice3、gateway2；[test-results.json](test-results.json) |
 | 认证 | 伪造身份头、缺失CSRF、会话轮换、改密/停用/角色修改失效、注册不能提权 |
 | 交易 | 双买家并发只有一个活动意向；同买家同key20并发返回同ID、异参数409；确认/完成/取消约束及reserved_order_id保护 |
 | 回滚 | 订单插入失败、条件预留失败、真实MySQL约束注入的Outbox写失败均无残留订单/预留；收藏计数失败关系回滚 |
-| 收藏/缓存 | 重复和并发PUT/DELETE保持关系与计数一致；个人favorite标记不跨用户 |
+| 收藏/缓存 | 重复和并发PUT/DELETE保持关系与计数一致；个人favorite标记不跨用户；收藏写接口不返回非公开商品详情 |
 | 分页和素材 | 原13列表遍历、过滤、空页/末页、排序与参数校验；78商品图和42轮播资源校验 |
 | 上传 | 正常PNG、伪造格式、伪WebP、空文件、超大文件、像素炸弹及匿名请求 |
 | 原生HTTP闭环 | 三个独立Java进程真实路由和Feign，另启第二market验证共享Session；[http-validation.json](http-validation.json) |
