@@ -1,87 +1,63 @@
 package com.campus.market.upload;
 
+import static com.campus.market.common.Errors.*;
+
 import com.campus.market.common.ApiResponse;
-import com.campus.market.auth.UserMapper;
-import com.campus.market.auth.User;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import javax.imageio.*;
+import javax.imageio.stream.ImageInputStream;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
-import javax.imageio.ImageIO;
-import java.nio.file.*;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/uploads")
 public class UploadController {
-    private static final long MAX_SIZE = 5 * 1024 * 1024;
-    private static final Set<String> TYPES = Set.of("image/jpeg", "image/png", "image/webp");
-    private final Path uploadRoot = Path.of("uploads").toAbsolutePath().normalize();
-    private final UserMapper users;
+  private final Path root;
 
-    public UploadController(UserMapper users) {
-        this.users = users;
-    }
+  public UploadController(@Value("${market.upload-dir}") String root) {
+    this.root = Path.of(root).toAbsolutePath().normalize();
+  }
 
-    @PostMapping("/image")
-    public ApiResponse<Map<String, String>> image(@RequestParam("file") MultipartFile file,
-            @RequestHeader("X-User-Id") Long userId) {
-        User user = users.findById(userId);
-        if (user == null || user.getStatus() != 1)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "账号不可用");
-        if (file == null || file.isEmpty())
-            throw bad("请选择图片文件");
-        if (file.getSize() > MAX_SIZE)
-            throw bad("图片不能超过 5MB");
-        String contentType = file.getContentType() == null ? ""
-                : file.getContentType().toLowerCase(Locale.ROOT);
-        if (!TYPES.contains(contentType))
-            throw bad("仅支持 JPG、PNG、WEBP 图片");
-        String extension = switch (contentType) {
-        case "image/png" -> ".png";
-        case "image/webp" -> ".webp";
-        default -> ".jpg";
+  @PostMapping("/image")
+  public ApiResponse<?> image(@RequestParam("file") MultipartFile file) {
+    if (file.isEmpty() || file.getSize() > 5 * 1024 * 1024) throw bad("图片为空或超过5MB");
+    String mime = Objects.toString(file.getContentType(), "").toLowerCase(Locale.ROOT);
+    String format =
+        switch (mime) {
+          case "image/png" -> "png";
+          case "image/jpeg" -> "JPEG";
+          default -> throw bad("请上传JPG/PNG，WebP请先转换");
         };
-        try {
-            byte[] bytes = file.getBytes();
-            boolean valid;
-            if ("image/webp".equals(contentType)) {
-                valid = bytes.length > 20
-                        && new String(bytes, 0, 4, java.nio.charset.StandardCharsets.US_ASCII).equals("RIFF")
-                        && new String(bytes, 8, 4, java.nio.charset.StandardCharsets.US_ASCII).equals("WEBP")
-                        && Set.of("VP8 ", "VP8L", "VP8X").contains(
-                                new String(bytes, 12, 4, java.nio.charset.StandardCharsets.US_ASCII));
-            } else {
-                boolean signature = "image/png".equals(contentType)
-                        ? bytes.length > 8 && (bytes[0] & 255) == 137 && bytes[1] == 80 && bytes[2] == 78
-                                && bytes[3] == 71
-                        : bytes.length > 3 && (bytes[0] & 255) == 255 && (bytes[1] & 255) == 216
-                                && (bytes[2] & 255) == 255;
-                valid = signature && ImageIO.read(new ByteArrayInputStream(bytes)) != null;
-            }
-            if (!valid)
-                throw bad("文件内容不是有效的图片");
-            Files.createDirectories(uploadRoot);
-            String filename = UUID.randomUUID() + extension;
-            Path target = uploadRoot.resolve(filename).normalize();
-            if (!target.startsWith(uploadRoot))
-                throw bad("非法文件路径");
-            Files.write(target, bytes, StandardOpenOption.CREATE_NEW);
-            return ApiResponse.ok(Map.of("url", "/uploads/" + filename, "name", StringUtils
-                    .cleanPath(file.getOriginalFilename() == null ? "商品图片" : file.getOriginalFilename())));
-        } catch (IOException error) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "图片保存失败", error);
-        }
+    try (ImageInputStream input =
+        ImageIO.createImageInputStream(new ByteArrayInputStream(file.getBytes()))) {
+      Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
+      if (!readers.hasNext()) throw bad("文件内容不是有效图片");
+      ImageReader reader = readers.next();
+      try {
+        reader.setInput(input, true, true);
+        int w = reader.getWidth(0), h = reader.getHeight(0);
+        if (w < 1 || h < 1 || w > 10000 || h > 10000 || (long) w * h > 20000000)
+          throw bad("图片尺寸超过限制（2000万像素）");
+        if (!reader.getFormatName().equalsIgnoreCase(format) || reader.read(0) == null)
+          throw bad("图片格式或内容无效");
+      } finally {
+        reader.dispose();
+      }
+      Files.createDirectories(root);
+      String filename = UUID.randomUUID() + (format.equals("png") ? ".png" : ".jpg");
+      Path target = root.resolve(filename).normalize();
+      if (!target.startsWith(root)) throw bad("非法文件路径");
+      Files.write(target, file.getBytes(), StandardOpenOption.CREATE_NEW);
+      return ApiResponse.ok(Map.of("url", "/uploads/" + filename));
+    } catch (javax.imageio.IIOException e) {
+      throw bad("图片内容损坏");
+    } catch (IOException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "图片保存失败", e);
     }
-
-    private ResponseStatusException bad(String message) {
-        return new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
-    }
+  }
 }

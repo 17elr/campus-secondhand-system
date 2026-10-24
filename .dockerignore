@@ -1,0 +1,10 @@
+.git
+**/target
+web/node_modules
+web/dist
+tmp
+artifacts
+.guidance-review
+毕业设计交付
+.env
+**/uploads

@@ -1,0 +1,13 @@
+ALTER TABLE sys_user ADD auth_version BIGINT NOT NULL DEFAULT 0;
+ALTER TABLE goods ADD seller_id BIGINT NULL, ADD reserved_order_id BIGINT NULL, ADD version BIGINT NOT NULL DEFAULT 0, ADD ownership_verified BOOLEAN NOT NULL DEFAULT FALSE, ADD CONSTRAINT fk_goods_seller FOREIGN KEY(seller_id) REFERENCES sys_user(id);
+ALTER TABLE trade_order ADD buyer_id BIGINT NULL, ADD seller_id BIGINT NULL, ADD request_key VARCHAR(80) NULL, ADD request_hash CHAR(64) NULL, ADD confirmed_at DATETIME NULL, ADD completed_at DATETIME NULL, ADD cancelled_at DATETIME NULL, ADD cancel_reason VARCHAR(500) NULL, ADD ownership_verified BOOLEAN NOT NULL DEFAULT FALSE, ADD CONSTRAINT fk_order_buyer FOREIGN KEY(buyer_id) REFERENCES sys_user(id), ADD CONSTRAINT fk_order_seller FOREIGN KEY(seller_id) REFERENCES sys_user(id), ADD UNIQUE KEY uq_request(buyer_id,request_key);
+ALTER TABLE trade_order ADD active_goods_id BIGINT GENERATED ALWAYS AS (CASE WHEN ownership_verified=TRUE AND status IN ('PENDING','CONFIRMED') THEN goods_id ELSE NULL END) STORED, ADD UNIQUE KEY uq_active_goods(active_goods_id);
+ALTER TABLE report ADD reporter_id BIGINT NULL, ADD CONSTRAINT fk_report_user FOREIGN KEY(reporter_id) REFERENCES sys_user(id);
+CREATE INDEX idx_goods_filter ON goods(status,category,id);
+CREATE INDEX idx_orders_buyer ON trade_order(buyer_id,id);
+CREATE INDEX idx_orders_seller ON trade_order(seller_id,id);
+CREATE INDEX idx_wants_user ON want_post(user_id,id);
+CREATE INDEX idx_messages_user ON goods_message(user_id,id);
+CREATE TABLE outbox_event(event_id CHAR(36) PRIMARY KEY,recipient_id BIGINT NOT NULL,type VARCHAR(40) NOT NULL,business_id BIGINT NOT NULL,payload JSON NOT NULL,status VARCHAR(16) NOT NULL DEFAULT 'PENDING',attempt INT NOT NULL DEFAULT 0,next_run_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,lease_until DATETIME NULL,lease_owner CHAR(36) NULL,created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,last_error VARCHAR(200) NULL,INDEX idx_outbox_due(status,next_run_at,lease_until));
+CREATE TABLE operation_log(id BIGINT AUTO_INCREMENT PRIMARY KEY,actor_id BIGINT NOT NULL,action VARCHAR(50) NOT NULL,target_id BIGINT NOT NULL,reason VARCHAR(500) NOT NULL,created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE demo_seed(id INT PRIMARY KEY,created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);

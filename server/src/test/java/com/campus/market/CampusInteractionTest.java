@@ -1,113 +1,113 @@
 package com.campus.market;
 
-import com.campus.market.auth.UserMapper;
-import com.campus.market.goods.GoodsMapper;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(properties = "spring.datasource.url=jdbc:h2:mem:interaction-test;MODE=MySQL;DB_CLOSE_DELAY=-1")
-@AutoConfigureMockMvc
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
 @Transactional
-class CampusInteractionTest {
-    @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private ObjectMapper json;
-    @Autowired
-    private UserMapper users;
-    @Autowired
-    private GoodsMapper goods;
+class CampusInteractionTest extends MarketTestSupport {
+  @Autowired JdbcTemplate jdbc;
 
-    @Test
-    void ownerCanEditAndWithdrawWantButOthersCannot() throws Exception {
-        String ownerId = users.findByUsername("student").getId().toString();
-        String otherId = users.findByUsername("zhou").getId().toString();
-        String payload = "{\"title\":\"求购测试教材\",\"category\":\"教材书籍\",\"budget\":25,\"description\":\"需要完整教材，图书馆面交\"}";
-        String response = mvc
-                .perform(post("/api/wants").header("X-User-Id", ownerId)
-                        .contentType(MediaType.APPLICATION_JSON).content(payload))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("PENDING")).andReturn()
-                .getResponse().getContentAsString();
-        Long wantId = json.readTree(response).path("data").path("id").asLong();
-        mvc.perform(put("/api/wants/" + wantId).header("X-User-Id", otherId)
-                .contentType(MediaType.APPLICATION_JSON).content(payload)).andExpect(status().isForbidden());
-        mvc.perform(put("/api/wants/" + wantId).header("X-User-Id", ownerId)
-                .contentType(MediaType.APPLICATION_JSON).content(payload.replace("25", "35")))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.data.budget").value(35));
-        mvc.perform(patch("/api/wants/" + wantId + "/status").param("value", "INVALID").header("X-User-Id",
-                ownerId)).andExpect(status().isBadRequest());
-        mvc.perform(patch("/api/wants/" + wantId + "/status").param("value", "WITHDRAWN").header("X-User-Id",
-                ownerId)).andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("WITHDRAWN"));
-        mvc.perform(put("/api/wants/" + wantId).header("X-User-Id", ownerId)
-                .contentType(MediaType.APPLICATION_JSON).content(payload)).andExpect(status().isConflict());
-        mvc.perform(patch("/api/admin/wants/" + wantId + "/status").param("value", "PUBLISHED")
-                .header("X-User-Role", "ADMIN")).andExpect(status().isConflict());
-        mvc.perform(post("/api/wants").header("X-User-Id", ownerId).contentType(MediaType.APPLICATION_JSON)
-                .content(payload.replace("25", "-1"))).andExpect(status().isBadRequest());
-    }
+  @Test
+  void ownerEditsWantAndTerminalStateCannotBeReopened() throws Exception {
+    Browser owner = login("student"), other = login("zhou"), admin = login("admin");
+    String payload =
+        "{\"title\":\"测试求购\",\"category\":\"教材书籍\",\"budget\":25,\"description\":\"图书馆面交\"}";
+    long id =
+        owner
+            .data(post("/api/wants").contentType(MediaType.APPLICATION_JSON).content(payload))
+            .path("id")
+            .asLong();
+    other
+        .call(put("/api/wants/" + id).contentType(MediaType.APPLICATION_JSON).content(payload))
+        .andExpect(status().isForbidden());
+    owner
+        .call(put("/api/wants/" + id).contentType(MediaType.APPLICATION_JSON).content(payload))
+        .andExpect(status().isOk());
+    admin
+        .call(
+            patch("/api/admin/wants/" + id + "/status")
+                .param("value", "PUBLISHED")
+                .param("reason", "审核通过"))
+        .andExpect(status().isOk());
+    owner
+        .call(patch("/api/wants/" + id + "/status").param("value", "FOUND"))
+        .andExpect(status().isOk());
+    admin
+        .call(
+            patch("/api/admin/wants/" + id + "/status")
+                .param("value", "PUBLISHED")
+                .param("reason", "再次审核"))
+        .andExpect(status().isConflict());
+    assertEquals(
+        1,
+        jdbc.queryForObject(
+            "select count(*) from outbox_event where type='WANT_REVIEWED' and business_id=?",
+            Integer.class,
+            id));
+  }
 
-    @Test
-    void approvedWantCanBeMarkedFoundAndCannotBeReopened() throws Exception {
-        String ownerId = users.findByUsername("zhou").getId().toString();
-        JsonNode wants = json.readTree(mvc
-                .perform(get("/api/wants").param("onlyMine", "true").param("status", "PUBLISHED")
-                        .header("X-User-Id", ownerId))
-                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString()).path("data")
-                .path("records");
-        Long wantId = null;
-        for (JsonNode want : wants) {
-            if (want.path("userId").asText().equals(ownerId)
-                    && want.path("status").asText().equals("PUBLISHED")) {
-                wantId = want.path("id").asLong();
-                break;
-            }
-        }
-        org.junit.jupiter.api.Assertions.assertNotNull(wantId);
-        mvc.perform(patch("/api/wants/" + wantId + "/status").param("value", "FOUND").header("X-User-Id",
-                ownerId)).andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("FOUND"));
-        mvc.perform(patch("/api/admin/wants/" + wantId + "/status").param("value", "PUBLISHED")
-                .header("X-User-Role", "ADMIN")).andExpect(status().isConflict());
-    }
+  @Test
+  void sellerReplyUsesIdDespiteIdenticalNicknames() throws Exception {
+    Browser seller = login("student"), buyer = login("zhou"), stranger = login("chen");
+    jdbc.update("update sys_user set nickname='相同昵称' where username in ('student','chen')");
+    long gid =
+        jdbc.queryForObject("select id from goods where title='Java Web 开发实战教材'", Long.class);
+    long mid =
+        buyer
+            .data(
+                post("/api/messages")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"goodsId\":" + gid + ",\"content\":\"可以面交吗？\"}"))
+            .path("id")
+            .asLong();
+    stranger
+        .call(
+            patch("/api/messages/" + mid + "/reply")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"content\":\"冒充回复\"}"))
+        .andExpect(status().isForbidden());
+    seller
+        .call(
+            patch("/api/messages/" + mid + "/reply")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"content\":\"可以面交\"}"))
+        .andExpect(status().isOk());
+    assertEquals(
+        2,
+        jdbc.queryForObject(
+            "select count(*) from outbox_event where business_id=? and type in"
+                + " ('MESSAGE_CREATED','MESSAGE_REPLIED')",
+            Integer.class,
+            mid));
+  }
 
-    @Test
-    void onlySellerCanReplyAndReplyAppearsInBuyerInbox() throws Exception {
-        Long sellerId = users.findByUsername("student").getId();
-        Long buyerId = users.findByUsername("zhou").getId();
-        Long strangerId = users.findByUsername("chen").getId();
-        Long goodsId = goods.findMine(sellerId).stream()
-                .filter(item -> item.getTitle().equals("Java Web 开发实战教材")).findFirst().orElseThrow().getId();
-        String response = mvc
-                .perform(post("/api/messages").header("X-User-Id", buyerId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"goodsId\":" + goodsId + ",\"content\":\"可以图书馆面交吗？\"}"))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.data.userName").value("周同学")).andReturn()
-                .getResponse().getContentAsString();
-        Long messageId = json.readTree(response).path("data").path("id").asLong();
-        String reply = "{\"content\":\"可以，下午六点图书馆见。\"}";
-        mvc.perform(patch("/api/messages/" + messageId + "/reply").header("X-User-Id", strangerId)
-                .contentType(MediaType.APPLICATION_JSON).content(reply)).andExpect(status().isForbidden());
-        mvc.perform(patch("/api/messages/" + messageId + "/reply").header("X-User-Id", sellerId)
-                .contentType(MediaType.APPLICATION_JSON).content("{\"content\":\"  \"}"))
-                .andExpect(status().isBadRequest());
-        mvc.perform(patch("/api/messages/" + messageId + "/reply").header("X-User-Id", sellerId)
-                .contentType(MediaType.APPLICATION_JSON).content(reply)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.data").value(true));
-        mvc.perform(get("/api/messages/mine").header("X-User-Id", buyerId)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.records[0].replyContent").value("可以，下午六点图书馆见。"))
-                .andExpect(jsonPath("$.data.records[0].goodsTitle").value("Java Web 开发实战教材"));
-        mvc.perform(post("/api/messages").header("X-User-Id", buyerId).contentType(MediaType.APPLICATION_JSON)
-                .content("{\"goodsId\":999999,\"content\":\"咨询不存在商品\"}")).andExpect(status().isNotFound());
-        mvc.perform(get("/api/messages/mine").header("X-User-Id", users.findByUsername("gu").getId()))
-                .andExpect(status().isForbidden());
+  @Test
+  void otherPrivateListsIgnoreForgedUserHeader() throws Exception {
+    Browser b = login("zhou");
+    for (JsonNode row : b.data(get("/api/goods/mine").header("X-User-Id", 1)).path("records"))
+      assertEquals(3, row.path("sellerId").asLong());
+  }
+
+  @Test
+  void favoriteDoesNotExposeAnUnlistedGoodsRecord() throws Exception {
+    Browser owner = login("student"), other = login("zhou");
+    Long gid =
+        jdbc.queryForObject(
+            "select id from goods where seller_id=1 and status='OFF_SHELF' limit 1", Long.class);
+    other.call(put("/api/goods/" + gid + "/favorite")).andExpect(status().isNotFound());
+    for (int i = 0; i < 2; i++) {
+      JsonNode data = other.data(delete("/api/goods/" + gid + "/favorite"));
+      assertFalse(data.has("title"));
+      assertFalse(data.has("description"));
+      assertFalse(data.path("favorite").asBoolean());
     }
+  }
 }

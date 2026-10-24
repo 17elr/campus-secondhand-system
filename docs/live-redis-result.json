@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "case": "Authenticated established Redis connection stopped and restarted",
+  "outageStatus": 503,
+  "recoveredSession": true,
+  "port": 16379
+}

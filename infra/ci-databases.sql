@@ -1,0 +1,10 @@
+CREATE DATABASE market CHARACTER SET utf8mb4;
+CREATE DATABASE notice CHARACTER SET utf8mb4;
+CREATE DATABASE market_test CHARACTER SET utf8mb4;
+CREATE DATABASE notice_test CHARACTER SET utf8mb4;
+CREATE USER 'market'@'%' IDENTIFIED BY 'local-campus-test';
+CREATE USER 'notice'@'%' IDENTIFIED BY 'local-notice-test';
+GRANT ALL ON market.* TO 'market'@'%';
+GRANT ALL ON market_test.* TO 'market'@'%';
+GRANT ALL ON notice.* TO 'notice'@'%';
+GRANT ALL ON notice_test.* TO 'notice'@'%';

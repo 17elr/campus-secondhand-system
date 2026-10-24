@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "before": {
+    "goods": 82,
+    "users": 37,
+    "orders": 35,
+    "priceTotal": 3774.26
+  },
+  "after": {
+    "goods": 82,
+    "users": 37,
+    "orders": 35,
+    "priceTotal": 3774.26
+  },
+  "isolatedPort": 13319
+}
