@@ -6,7 +6,7 @@
 
 | 检查 | 结果与证据 |
 |---|---|
-| mvn verify | 36项通过，0失败/错误/跳过；market31、notice3、gateway2；[test-results.json](test-results.json) |
+| mvn verify | 38项通过，0失败/错误/跳过；market33、notice3、gateway2；[test-results.json](test-results.json) |
 | 认证 | 伪造身份头、缺失CSRF、会话轮换、改密/停用/角色修改失效、注册不能提权 |
 | 交易 | 双买家并发只有一个活动意向；同买家同key20并发返回同ID、异参数409；确认/完成/取消约束及reserved_order_id保护 |
 | 回滚 | 订单插入失败、条件预留失败、真实MySQL约束注入的Outbox写失败均无残留订单/预留；收藏计数失败关系回滚 |
@@ -16,6 +16,8 @@
 | 原生HTTP闭环 | 三个独立Java进程真实路由和Feign，另启第二market验证共享Session；[http-validation.json](http-validation.json) |
 | 通知故障 | 停止notice时购买意向继续提交，实测一次约0.018秒；恢复后持久Outbox投递；这不是性能基准 |
 | Redis认证故障 | 不可用Redis实例下已有会话请求503；新建匿名CSRF会话同样503 |
+| Feign超时 | 受控5秒HTTP端点下，实际Spring配置的Feign约3.099秒返回，只有1次HTTP尝试，无自动重试；[feign-timeout-result.json](feign-timeout-result.json) |
+| Redis实时断连恢复 | 已登录会话建立连接后停止/恢复Redis，断连503且恢复后原会话可用；[live-redis-result.json](live-redis-result.json) |
 | MySQL重启 | 隔离实例正常关闭/重启前后用户、商品、订单和金额相同；[mysql-restart-result.json](mysql-restart-result.json) |
 | H2→MySQL演练 | 旧提交已知fixture重建临时H2后导出/导入独立MySQL，七表行数/金额/ID/图片与原字段校验通过；[fixture-migration-report.json](fixture-migration-report.json) |
 | Python迁移检查 | 4项通过：无昵称推断、显式映射、冲突保留、SQL值编码 |

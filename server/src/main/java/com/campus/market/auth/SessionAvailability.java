@@ -22,7 +22,8 @@ public class SessionAvailability extends OncePerRequestFilter {
       boolean redis = false;
       while (cause != null) {
         if (cause instanceof org.springframework.data.redis.RedisConnectionFailureException
-            || cause instanceof org.springframework.data.redis.RedisSystemException) redis = true;
+            || cause instanceof org.springframework.data.redis.RedisSystemException
+            || cause instanceof io.lettuce.core.RedisException) redis = true;
         cause = cause.getCause();
       }
       if (redis && !res.isCommitted()) {

@@ -3,7 +3,7 @@
   "java": "17.0.18",
   "database": "MySQL 8.0.44",
   "totals": {
-    "tests": 36,
+    "tests": 38,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -37,6 +37,14 @@
       "module": "server",
       "name": "com.campus.market.PaginationTest",
       "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "server",
+      "name": "com.campus.market.SessionAvailabilityTest",
+      "tests": 2,
       "failures": 0,
       "errors": 0,
       "skipped": 0

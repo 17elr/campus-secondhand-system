@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "readTimeoutSeconds": 3,
+  "observedSeconds": 3.099,
+  "httpAttempts": 1,
+  "automaticRetry": false,
+  "method": "Actual Spring-configured OpenFeign client calling a controlled five-second HTTP response; real notice process tested separately"
+}
