@@ -30,6 +30,8 @@
 
 ## 自动化交付
 
-CI配置会在GitHub运行Maven verify、Vue build、真实MySQL/Redis下的独立进程及浏览器回归，以及单独的Compose构建/运行/故障测试。Compose测试会停止/恢复notice、重启MySQL检查数据、停止Redis验证503。失败保留日志与测试产物。
+GitHub Linux runner 已通过两项独立任务：`integration` 验证 Maven、Vue 构建、真实 MySQL / Redis / Java 进程及浏览器回归；`compose` 构建并启动六个服务，检查通知停机恢复、MySQL 重启持久化及 Redis 故障返回 503。
 
-本机没有Docker，未将YAML解析成功当成Compose实际运行成功；发布分支后应以GitHub CI实际结果为准。未执行生产部署、正式压测、TLS终端验证、生产备份恢复或真实用户历史恢复。进程故障/幂等验证不等于生产SLA。
+[已通过的 main 分支验收记录](https://github.com/17elr/campus-secondhand-system/actions/runs/40074759924)对应提交 `e56d56d6d891d45d0f5ad045b578c948b7ed96a0`，任务日志与截图产物可从该记录下载。[当前 CI 状态](https://github.com/17elr/campus-secondhand-system/actions/workflows/ci.yml)随后续提交更新。
+
+本机没有 Docker，容器验收由 GitHub runner 实际执行。未执行生产部署、正式压测、TLS 终端验证、生产备份恢复或真实用户历史恢复；这些检查不代表生产 SLA。

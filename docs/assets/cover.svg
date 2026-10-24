@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="340" viewBox="0 0 1440 340" role="img" aria-labelledby="title desc">
+  <title id="title">拾光集市 · 让好物在校园里继续流动</title>
+  <desc id="desc">沿用项目绿色与米白色的品牌封面，右侧为拾字标志与同校面交说明。</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f4f7ef"/>
+      <stop offset="1" stop-color="#e8efe3"/>
+    </linearGradient>
+    <linearGradient id="forest" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#326d56"/>
+      <stop offset="1" stop-color="#254b3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="340" rx="24" fill="url(#paper)"/>
+  <circle cx="1390" cy="40" r="200" fill="none" stroke="#d6e2d3" stroke-width="1.5"/>
+  <circle cx="1390" cy="40" r="255" fill="none" stroke="#d6e2d3" stroke-width="1.5"/>
+  <g font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, Arial, sans-serif">
+    <rect x="56" y="40" width="42" height="42" rx="12" fill="#326d56"/>
+    <text x="77" y="70" fill="#ffffff" font-size="27" font-weight="700" text-anchor="middle">拾</text>
+    <text x="114" y="67" fill="#526b5a" font-size="17" letter-spacing="3">CAMPUS MARKET</text>
+    <text x="56" y="158" fill="#243d32" font-size="58" font-weight="700">让好物在校园里</text>
+    <text x="56" y="232" fill="#326d56" font-size="58" font-weight="700">继续流动。</text>
+    <rect x="58" y="267" width="34" height="3" rx="1.5" fill="#c58b54"/>
+    <text x="108" y="275" fill="#607363" font-size="19">发布闲置 · 遇见同学 · 线下面交</text>
+    <g transform="translate(1040 40) rotate(5 152 130)">
+      <rect x="-17" y="12" width="304" height="260" rx="26" fill="#d7e3d2"/>
+      <rect width="304" height="260" rx="26" fill="url(#forest)"/>
+      <text x="30" y="43" fill="#d8e6d1" font-size="13" letter-spacing="2.5">A SECOND STORY</text>
+      <text x="152" y="170" fill="#f3f6e9" font-size="110" font-weight="700" text-anchor="middle">拾</text>
+      <line x1="30" y1="202" x2="274" y2="202" stroke="#70917b"/>
+      <text x="30" y="232" fill="#f3f6e9" font-size="17">校园好物</text>
+      <text x="274" y="232" fill="#d9c6a0" font-size="17" text-anchor="end">同校面交</text>
+    </g>
+  </g>
+</svg>

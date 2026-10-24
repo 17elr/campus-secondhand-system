@@ -1,0 +1,23 @@
+name: 问题反馈
+description: 报告可复现的运行、页面或数据问题
+title: "[Bug] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题与预期
+      description: 实际发生了什么？你期望的结果是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      placeholder: "1. 使用什么账号角色\n2. 打开哪个页面\n3. 执行什么操作"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境与必要日志
+      description: 提供提交版本、操作系统、Compose 或本地启动方式及错误信息；隐去密码、Cookie 与 token。
